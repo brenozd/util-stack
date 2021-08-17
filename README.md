@@ -49,3 +49,6 @@ Generate an ssl certificate with lets encrypt, using provided hooks.
 Remember: change **\<domain>** to your domain. You might need to change pre and post hook paths
 
 Inside **nginx/nginx.conf**, at line 30 and 31, change **\<host>** to your domain.
+
+## File browser
+After starting the stack, your login at file browser is admin/admin, you can change it.
