@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  filemanager:
+    container_name: filebrowser
+    image: filebrowser/filebrowser
+    volumes:
+      - $PWD/files/:/srv
+      - $PWD/database.db:/database.db
+    ports:
+      - "8000:80"
+  sftp:
+    container_name: sftp
+    image: atmoz/sftp:alpine
+    volumes:
+      - type: bind
+        source: $PWD/files/uploads/
+        target: /home/sftp/uploads
+      - $PWD/sftp/users.conf:/etc/sftp/users.conf:ro
+      - $PWD/sftp/ssh/id_rsa.pub:/home/breno/.ssh/keys/id_rsa.pub:ro 
+      - $PWD/sftp/ssh/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key
+      - $PWD/sftp/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key
+    ports:
+      - "22:22"
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    volumes:
+      - $PWD/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
